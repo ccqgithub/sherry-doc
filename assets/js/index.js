@@ -1,9 +1,16 @@
+$.fn.role = function(role) {
+    return this.find('[data-role~="'+ role +'"]');
+}
+
 // dom ready
 $(function() {
     var $side = $('#side'),
         $content = $('#content'),
         getIndex = 0,
-        config = null;
+        config = null,
+        doclist = [],
+        curDoc = null,
+        curArticles = [];
 
     // 侧边栏滚动
     $side.niceScroll();
@@ -11,13 +18,14 @@ $(function() {
     // 内容区滚动
     $content.niceScroll();
 
-    $side.find('.item').click(function(event) {
+    $side.on('click', '[data-role="item"]', function(event) {
         var $btn = $(this),
-            post = $btn.data('post'),
-            url = './posts/' + post,
+            i = $btn.data('i'),
+            art = curArticles[i],
+            url = art.file.replace(/\\/g, '/'),
             index = (++getIndex);
 
-        $loading.show();
+        showLoading('加载中……');
         $.ajax({
             url: url,
             type: 'get',
@@ -28,9 +36,9 @@ $(function() {
             
             var html, splitStr, arr, str;
 
-            $loading.hide();
+            hideLoading();
             // remove config str
-            splitStr = '=======CONFIG======';
+            splitStr = config.confSplit;
             arr = res.split(splitStr, 2);
             str = arr.length > 1 ? arr[1] : arr[0];
 
@@ -79,19 +87,88 @@ $(function() {
 
     showLoading('正在加载配置文件……');
     $.ajax({
-        url: './config.js',
+        url: './data/config.json',
         type: 'get',
         dataType: 'json'
     })
     .done(function(res) {
         hideLoading();
         config = res;
+        doclist = config.doclist || [];
+        initDoc();
     })
     .fail(function() {
         //
         console.log(arguments);
     });
 
+    function initDoc() {
+        var $nav = $side.role('nav'),
+            li = '';
+
+        $.each(doclist, function(index, val) {
+            val.index = index;
+            li += '<li data-i="'+ index +'">'+ val.title +'</li>';
+        });
+
+        $nav.role('drop').html(li);
+
+        $nav.role('drop').children('li').click(function(event) {
+            var i = $(this).data('i'),
+                text = $(this).text();
+
+            $nav.role('show').text(text);
+            curDoc = doclist[i];
+            refreshDoc();
+        }).eq(0).trigger('click');
+    }
+
+    function refreshDoc() {
+        var index = curDoc.index,
+            url = curDoc.articles.replace(/\\/g, '/');
+
+        showLoading('正在获取文章列表……');
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json'
+        })
+        .done(function(res) {
+            hideLoading();
+            curArticles = res;
+            refreshSide();
+        })
+        .fail(function() {
+            //
+            console.log(arguments);
+        });
+
+    }
+
+    function refreshSide() {
+        var categories = {},
+            $list = $side.role('navlist'),
+            str = '';
+
+        $.each(curArticles, function(index, val) {
+            var cat = val.category || '未分类';
+
+            if (!categories[cat]) categories[cat] = [];
+            categories[cat].push(val);
+        });
+
+        $.each(categories, function(cat, val) {
+            str += '<li class="nav-li"> <h3> <i class="fa fa-leaf"></i> <span>'+ cat +'</span> </h3><ul class="nav2">';
+
+            $.each(val, function(i, v) {
+                str += '<li class="nav2-li"> <a href="javascript:;" data-role="item" data-i="'+ i +'">'+ v.title +'</a> </li>';
+            });
+
+            str += '</ul></li>';
+        });
+
+        $list.html(str);
+    }
 });
 
 function showLoading(msg) {

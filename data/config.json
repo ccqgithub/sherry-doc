@@ -1,0 +1,17 @@
+{
+	"confSplit": "=======CONFIG======",
+	"doclist": [
+		{
+			"title": "文档一",
+			"path": "posts/doc1",
+			"articles": "data\\articles-0.json",
+			"count": 1
+		},
+		{
+			"title": "文档二",
+			"path": "posts/doc2",
+			"articles": "data\\articles-1.json",
+			"count": 1
+		}
+	]
+}

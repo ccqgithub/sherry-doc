@@ -16,9 +16,11 @@ body{width: 100%; min-height: 100%; font-family: "Hiragino Sans GB","Microsoft Y
 
 .docnav{position: relative; display: block; margin: 10px; line-height: 30px; white-space: nowrap; font-size: 16px;}
 .docnav .t{display: inline-block;}
-.docnav.hover .t{background: #fff; padding: 0 10px;}
-.docnav .dropdown{position: absolute; min-width: 100%; left: 0; top: 30px; background: #fff; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176); border-radius: 3px;}
-.docnav .dropdown li{line-height: 40px; padding: 0 10px; border-bottom: 1px solid #ddd;}
+.docnav .dropdown{position: absolute; min-width: 100%; left: 0; top: 30px; background: #fff; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176); display: none;}
+.docnav .dropdown li{line-height: 30px; padding: 0 10px; border-bottom: 1px solid #ddd; cursor: pointer; font-size: 14px; }
+.docnav .dropdown li:hover{background: #eee;}
+.docnav:hover .t{background: #fff; padding: 0 10px;}
+.docnav:hover .dropdown{display: block;}
 
 .nav-li{border-bottom: 1px solid rgba(255,255,255,.2);}
 .nav-li > h3{padding: 10px; line-height: 20px; }

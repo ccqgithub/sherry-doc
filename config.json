@@ -1,0 +1,10 @@
+{
+    "confSplit": "=======CONFIG======",
+    "doclist": [{
+        "title": "文档一",
+        "path": "posts/doc1"
+    }, {
+        "title": "文档二",
+        "path": "posts/doc2"
+    }]
+}
