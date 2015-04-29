@@ -1,6 +1,119 @@
-var page = {};
+// dom ready
+$(function() {
+    var $side = $('#side'),
+        $content = $('#content'),
+        getIndex = 0,
+        config = null;
 
-page.debounce = function(fn, delay, prepose) {
+    // 侧边栏滚动
+    $side.niceScroll();
+
+    // 内容区滚动
+    $content.niceScroll();
+
+    $side.find('.item').click(function(event) {
+        var $btn = $(this),
+            post = $btn.data('post'),
+            url = './posts/' + post,
+            index = (++getIndex);
+
+        $loading.show();
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'text'
+        })
+        .done(function(res) {
+            if (index != getIndex) return;
+            
+            var html, splitStr, arr, str;
+
+            $loading.hide();
+            // remove config str
+            splitStr = '=======CONFIG======';
+            arr = res.split(splitStr, 2);
+            str = arr.length > 1 ? arr[1] : arr[0];
+
+            // markdown to html
+            html = marked(str);
+           
+            // optimize content
+            html = optimizeContent(html);
+
+            // show content
+            $content.find('.in').html(html);
+
+            // resize nicescroll
+            $content.getNiceScroll().resize();
+            
+            // img face box 
+            $content.find('img').wrap('<a class="fancybox"></a>');
+            $content.find('.fancybox').each(function(index, el) {
+                $(el).attr('rel', 'fancybox')
+                .attr('href', $(this).find('img').attr('src'));
+            });
+            $content.find('.fancybox').fancybox({
+                prevEffect  : 'fade',
+                nextEffect  : 'fade',
+                aspectRatio: true,
+                helpers: {
+                    title: {
+                        type: 'outside'
+                    },
+                    thumbs: {
+                        width: 50,
+                        height: 50
+                    }
+                }
+            });
+        })
+        .fail(function(res) {
+            //
+            console.log(arguments);
+        });
+        
+    });
+
+    // 初始化背景
+    initBg();
+
+    showLoading('正在加载配置文件……');
+    $.ajax({
+        url: './config.js',
+        type: 'get',
+        dataType: 'json'
+    })
+    .done(function(res) {
+        hideLoading();
+        config = res;
+    })
+    .fail(function() {
+        //
+        console.log(arguments);
+    });
+
+});
+
+function showLoading(msg) {
+    var $loading = $('#loading');
+
+    $loading.find('span').text(msg);
+    $loading.css('width', 'auto');
+    $loading.css('marginLeft', 0 - $loading.width() / 2);
+    $loading.show();
+}
+
+function hideLoading() {
+    $('#loading').hide();
+}
+    
+// 优化文档内容
+function optimizeContent(content) {
+    return content;
+}
+
+// 节流
+function debounce(fn, delay, prepose) {
     var timer, last_exec = 0;
 
     return function() {
@@ -26,7 +139,7 @@ page.debounce = function(fn, delay, prepose) {
 }
 
 // 背景
-page.bg = function() {
+function initBg() {
     var $bg = $('#bg'),
         $win = $(window),
         isLoaded = false,
@@ -40,7 +153,10 @@ page.bg = function() {
         _pos();
     }
     image.src = $bg.attr('src');
+
     $win.resize(_pos);
+
+     _pos();
 
     function _pos() {
         var w = $win.width(),
@@ -55,15 +171,3 @@ page.bg = function() {
         });
     }
 }
-
-page.refreshWall = function() {
-	$('.card').(array/object, function(index, val) {
-		 /* iterate through array or object */
-	});
-}
-
-
-
-
-page.bg();
-page.refreshWall();

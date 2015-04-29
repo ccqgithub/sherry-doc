@@ -3,143 +3,114 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>sherry doc</title>
+	<link rel="stylesheet" href="./assets/css/reset.css" />
 	<link rel="stylesheet" href="./assets/css/index.css" />
+	<link rel="stylesheet" href="./assets/theme/github.css" />
+	<link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.min.css" />
+
+	<!-- fancybox -->
+	<link rel="stylesheet" href="./assets/fancybox/jquery.fancybox.css" />
+	<link rel="stylesheet" href="./assets/fancybox/helpers/jquery.fancybox-buttons.css" />
+	<link rel="stylesheet" href="./assets/fancybox/helpers/jquery.fancybox-thumbs.css" />
+
 </head>
 <body>
 
 	<img src="./assets/img/bg.jpg" alt="" id="bg" class="bg" />
 
-	<div class="top">
-		<input type="text" class="search" placeholder="输入标题、描述搜索" autocomplete="off" />
-	</div>
+	<div class="loading" id="loading"><i class="fa fa-spin fa-spinner"></i> <span>loading……</span></div>
 
-	<div class="list">
-		<div class="transitions-enabled masonry cards clearfix" id="cards">
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
+	<aside class="side" id="side">
+		<div class="side-in">
+			<div class="search">
+				<input type="text" placeholder="输入标题、分类、描述、作者搜索" />
 			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
+
+			<div class="docnav hover">
+				<div class="t">
+					<i class="fa fa-home"></i> 
+					<span>文档测试</span>
+					<i class="fa fa-caret-down"></i> 
 				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
+				<ul class="dropdown">
+					<li>文档测试</li>
+					<li>文档测试</li>
+					<li>文档测试</li>
+				</ul>
 			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-			<div class="card" style="z-index:10;">
-				<div class="title">
-					嚼两口山东龙口反倒是快
-				</div>
-				<div class="description">
-					嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快嚼两口山东龙口反倒是快
-				</div>
-			</div>
-		</div>			
+
+			<ul class="nav-list">
+				<!-- <li class="nav-li">
+					<h3>
+						<i class="fa fa-leaf"></i> 
+						<span>无分类</span>
+					</h3>
+					<ul class="nav2">
+						<li class="nav2-li">
+							<a href="javascript:;" class="item" data-post="test.md">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-li">
+					<h3>
+						<i class="fa fa-leaf"></i> 
+						<span>无分类</span>
+					</h3>
+					<ul class="nav2">
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-li">
+					<h3>
+						<i class="fa fa-leaf"></i> 
+						<span>无分类</span>
+					</h3>
+					<ul class="nav2">
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+						<li class="nav2-li">
+							<a href="javascript:;">jklsf</a>
+						</li>
+					</ul>
+				</li> -->
+			</ul>
+		</div>
+	</aside>	
+
+	<div class="content" id="content">
+		<article class="content-in in markdown-body">
+			
+		</article>
 	</div>
 	
-	<script src="./config.js"></script>
 	<script src="./assets/js/jquery-1.11.2.min.js"></script>
+	<script src="./assets/js/jquery.nicescroll.min.js"></script>
+	<script src="./assets/js/marked.js"></script>
+
+	<!-- fancybox -->
+	<script src="./assets/fancybox/jquery.fancybox.pack.js"></script>
+	<script src="./assets/fancybox/helpers/jquery.fancybox-buttons.js"></script>
+	<script src="./assets/fancybox/helpers/jquery.fancybox-thumbs.js"></script>
+	<script src="./assets/fancybox/helpers/jquery.fancybox-media.js"></script>
+
 	<script src="./assets/js/index.js"></script>
 </body>
 </html>

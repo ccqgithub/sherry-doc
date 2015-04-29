@@ -1,34 +1,33 @@
 *,*:before,*:after{padding: 0; margin: 0; box-sizing: border-box;}
 html{height: 100%; width: 100%;}
-body{width: 100%; min-height: 100%; font-family: "Hiragino Sans GB","Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体"; font-size: 14px; line-height: 1; color: #333;}
+body{width: 100%; min-height: 100%; font-family: "Hiragino Sans GB","Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体"; font-size: 14px; line-height: 1; color: #333; background: #fff;}
 
 .clearfix:after{display: block; content: ''; width: 0; height: 0; overflow: hidden; clear: both;}
 
+/*背景*/
 .bg{position: fixed; width: 100%; min-height: 100%; z-index: 0;}
 
-.top{padding: 20px; border-bottom: 1px solid #fff; position: fixed; width: 100%; left: 0; top: 0; z-index: 2; }
+/*左侧栏*/
+.side{position: fixed; z-index: 1; width: 300px; left: 0; top: 0; bottom: 0; overflow: hidden; background: rgba(255,255,255,.5);}
+.side-in{height: 2000px;}
 
-.search{display: block; padding: 10px; line-height: 20px; border: 1px solid #fff; background: rgba(255,255,255,.8); outline: none; border-radius: 5px; width: 100%; text-align: center; font-size: 20px;}
+.search{padding: 10px;}
+.search input{border: 1px solid #fff; padding: 5px; line-height: 20px; background: none; outline: none; border-radius: 3px; display: block; width: 100%; background: rgba(255,255,255,.2);}
 
-.list{padding: 100px 20px 20px 20px; margin: 0;}
+.docnav{position: relative; display: block; margin: 10px; line-height: 30px; white-space: nowrap; font-size: 16px;}
+.docnav .t{display: inline-block;}
+.docnav.hover .t{background: #fff; padding: 0 10px;}
+.docnav .dropdown{position: absolute; min-width: 100%; left: 0; top: 30px; background: #fff; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176); border-radius: 3px;}
+.docnav .dropdown li{line-height: 40px; padding: 0 10px; border-bottom: 1px solid #ddd;}
 
-.cards-c{}
-.cards{margin: 0 -10px; padding: 10px; position: relative;}
-.card{position: absolute; left: 10px; top: 10px; width: 200px; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); line-height: 24px; cursor: pointer; opacity: .9;}
-.card:hover{opacity: 1}
-.card .title{padding: 10px; font-size: 16px; background: #fafafa; border-bottom: 1px solid #f2f2f2;}
-.card .description{padding: 10px; color: #999; }
+.nav-li{border-bottom: 1px solid rgba(255,255,255,.2);}
+.nav-li > h3{padding: 10px; line-height: 20px; }
+.nav2-li > a{color: #333; padding: 0 20px; line-height: 30px; text-decoration: none;}
+.nav2-li > a:hover{color: #fff;}
 
+/*右侧栏*/
+.content{position: fixed; z-index: 1; left: 300px; top: 0; bottom: 0; right: 0; overflow: hidden; background: rgba(255,255,255,.7);}
 
-/**** Transitions ****/
-.card {
-	-webkit-transition-duration: .5s;
-	-moz-transition-duration: .5s;
-	-o-transition-duration: .5s;
-	transition-duration: .5s;
+.loading{position: fixed; width: 200px; height: 60px; line-height: 60px; background: rgba(255,255,255,.9); border-radius: 3px; text-align: center; color: #7BC0F4; left: 50%; top: 50%; margin-left: -50px; margin-top: -15px; z-index: 999; font-size: 20px; display: none; padding: 0 20px;}
 
-	-webkit-transition-property: left, right, top;
-	-moz-transition-property: left, right, top;
-	-o-transition-property: left, right, top;
-	transition-property: left, right, top;
-}
+.content-in{padding: 20px;}
