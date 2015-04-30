@@ -16,34 +16,42 @@
 </head>
 <body>
 
-	<img src="./assets/img/bg.jpg" alt="" id="bg" class="bg" />
-
 	<div class="loading" id="loading"><i class="fa fa-spin fa-spinner"></i> <span>loading……</span></div>
 
 	<aside class="side" id="side">
-		<div class="side-in">
-			<div class="search">
-				<input type="text" placeholder="输入标题、分类、描述、作者搜索" />
-			</div>
-
-			<div class="docnav" data-role="nav">
-				<div class="t">
-					<i class="fa fa-home"></i> 
-					<span class="show" data-role="show"></span>
-					<i class="fa fa-caret-down"></i> 
+		<!-- search	 -->
+		<div class="search">
+			<div class="ins">
+				<i class="fa fa-search"></i>
+				<div class="text">
+					<input type="text" placeholder="输入关键字搜索" autocomplete="off" id="searchIns" />
 				</div>
-				<ul class="dropdown" data-role="drop">
-				</ul>
+			</div>				
+		</div>
+		
+		<!-- docnav -->
+		<div class="doc-nav" data-role="docNav">
+			<div class="t">
+				<i class="fa fa-home"></i> 
+				<span class="show" data-role="show"></span>
+				<i class="fa fa-caret-down"></i> 
 			</div>
-
-			<ul class="nav-list" data-role="navlist">
-
+			<ul class="dropdown" data-role="drop">
 			</ul>
+		</div>
+		
+		<!-- article nav -->
+		<ul class="article-nav" data-role="articleNav">
+
+		</ul>
+
+		<div class="footer" id="footer">
+			Powered by <a href="https://github.com/ccqgithub" target="_blank">Season.Chen</a> 
 		</div>
 	</aside>	
 
 	<div class="content" id="content">
-		<article class="content-in in markdown-body">
+		<article class="article markdown-body" id="article">
 			
 		</article>
 	</div>

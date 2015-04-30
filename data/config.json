@@ -1,16 +1,23 @@
 {
 	"confSplit": "=======CONFIG======",
-	"doclist": [
+	"docName": "sherry-doc",
+	"docList": [
 		{
-			"title": "文档一",
-			"path": "posts/doc1",
+			"title": "帮助文档",
+			"path": "posts/help",
 			"articles": "data\\articles-0.json",
+			"count": 2
+		},
+		{
+			"title": "文档1",
+			"path": "posts/doc1",
+			"articles": "data\\articles-1.json",
 			"count": 1
 		},
 		{
-			"title": "文档二",
+			"title": "文档2",
 			"path": "posts/doc2",
-			"articles": "data\\articles-1.json",
+			"articles": "data\\articles-2.json",
 			"count": 1
 		}
 	]

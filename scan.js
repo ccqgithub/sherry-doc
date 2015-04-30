@@ -1,6 +1,6 @@
 /**
  * 扫描目录下的文档文件
- * author: season.chen
+ * @author: season.chen
  */
 
 var fs = require('fs'),
@@ -8,7 +8,7 @@ var fs = require('fs'),
     config = require('./config.json'),
     yaml = require('./lib/js-yaml/js-yaml.js'),
     dateFormat = require('./lib/dateformat.js'),
-    doclist = [],
+    docList = [],
     all = [],
     basePath = './',
     dataPath = './data/',
@@ -31,13 +31,13 @@ Date.prototype.Format = function(fmt) { //author: meizz
 	return fmt;
 }
 
-doclist = config.doclist || [];
+docList = config.docList || [];
 
 console.log('get config success……');
-console.log('a total of '+ doclist.length +' documents.');
+console.log('a total of '+ docList.length +' documents.');
 console.log('====================');
 
-doclist.forEach(function(item, i) {
+docList.forEach(function(item, i) {
     var dir = path.join(basePath, item.path);
     var list = [];
 
@@ -58,8 +58,8 @@ all.forEach(function(item, i) {
 	var filename = path.join(dataPath, 'articles-' + i + '.json');
 	var buffer = JSON.stringify(item, null, '\t');
 
-	doclist[i]['articles'] = filename;
-	doclist[i]['count'] = item.length;
+	docList[i]['articles'] = filename;
+	docList[i]['count'] = item.length;
 	console.log('write json: ' + filename);
 	fs.open(filename, "w", 0777, function(e, fd){
 	    if(e) throw e;

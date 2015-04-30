@@ -1,112 +1,137 @@
+/**
+ * index.js
+ * @author season.chen
+ */
+
+// jQuery.fn.role
 $.fn.role = function(role) {
     return this.find('[data-role~="'+ role +'"]');
 }
 
-// dom ready
-$(function() {
-    var $side = $('#side'),
-        $content = $('#content'),
-        getIndex = 0,
-        config = null,
-        doclist = [],
-        curDoc = null,
-        curArticles = [];
+// 节流
+var debounce = function(fn, delay, prepose) {
+    var timer, last_exec = 0;
 
-    // 侧边栏滚动
-    $side.niceScroll();
+    return function() {
+        var that = this,
+            args = arguments,
+            diff, curr,
+            exec = function() {
+                last_exec = +new Date();
+                fn.apply(that, args);
+            };
+        timer && clearTimeout(timer);
+        if (prepose) {
+            diff = delay - (+new Date() - last_exec);
+            diff <= 0 && exec();
+        } else {
+            timer = setTimeout(exec, delay);
+        }
+    }
+}
 
-    // 内容区滚动
-    $content.niceScroll();
+var DocAPI = {
+    init: function() {
+        var that = this,
+            $articleNav = $('#side').role('articleNav'),
+            $content = $('#content');
 
-    $side.on('click', '[data-role="item"]', function(event) {
-        var $btn = $(this),
-            i = $btn.data('i'),
-            art = curArticles[i],
-            url = art.file.replace(/\\/g, '/'),
-            index = (++getIndex);
+        this.config = null;
+        this.curDoc = null;
+        this.curArticleList = null;
+        this.curShowArticleList = null;
+        this.curArticle = null;
+        this.curArticleContent = null;
+        this.getConfig();
 
-        showLoading('加载中……');
+        // 侧边栏滚动
+        $articleNav.niceScroll();
+
+        // 内容区滚动
+        $content.niceScroll();
+
+        $articleNav.on('click', '[data-role="navCat"]', function() {
+            $(this).next('ul').slideToggle(function() {
+                $articleNav.getNiceScroll().resize();
+            });
+        });
+
+        $articleNav.on('click', '[data-role="item"]', function() {
+            var $item = $(this),
+                i = $item.data('i'),
+                url;
+
+            $articleNav.role('item').removeClass('active');
+            $articleNav.role('navi').removeClass('active');
+            $item.closest('[data-role="navi"]').addClass('active');
+            $item.addClass('active');
+
+            that.curArticle = that.curShowArticleList[i];
+            url = that.fixUrl(that.curArticle.file);
+            that.ajax(url, 'text', function(res) {
+                that.curArticleContent = res;
+                that.refreshArticleContent();
+            });
+        });
+
+        // 搜索
+        $('#searchIns').on('keyup focus mouseup change', debounce(function() {
+            if (!that.curArticleList) return;
+            that.refreshArticleNav();
+        }, 200));
+    },
+    showLoading: function(msg) {
+        var $loading = $('#loading');
+
+        $loading.find('span').text(msg);
+        $loading.css('width', 'auto');
+        $loading.css('marginLeft', 0 - $loading.width() / 2);
+        $loading.show();
+    },
+    hideLoading: function() {
+        $('#loading').hide();
+    },
+    ajax: function(url, dataType, callback) {
+        var that = this;
+
+        that.showLoading('正在获取数据……');
         $.ajax({
             url: url,
             type: 'get',
-            dataType: 'text'
+            dataType: dataType
         })
         .done(function(res) {
-            if (index != getIndex) return;
-            
-            var html, splitStr, arr, str;
-
-            hideLoading();
-            // remove config str
-            splitStr = config.confSplit;
-            arr = res.split(splitStr, 2);
-            str = arr.length > 1 ? arr[1] : arr[0];
-
-            // markdown to html
-            html = marked(str);
-           
-            // optimize content
-            html = optimizeContent(html);
-
-            // show content
-            $content.find('.in').html(html);
-
-            // resize nicescroll
-            $content.getNiceScroll().resize();
-            
-            // img face box 
-            $content.find('img').wrap('<a class="fancybox"></a>');
-            $content.find('.fancybox').each(function(index, el) {
-                $(el).attr('rel', 'fancybox')
-                .attr('href', $(this).find('img').attr('src'));
-            });
-            $content.find('.fancybox').fancybox({
-                prevEffect  : 'fade',
-                nextEffect  : 'fade',
-                aspectRatio: true,
-                helpers: {
-                    title: {
-                        type: 'outside'
-                    },
-                    thumbs: {
-                        width: 50,
-                        height: 50
-                    }
-                }
-            });
+            that.hideLoading();
+            callback(res);
         })
-        .fail(function(res) {
-            //
-            console.log(arguments);
+        .fail(function() {
+            that.hideLoading();
+            alert('获取数据失败！');
         });
-        
-    });
+    },
+    fixUrl: function(url) {
+        return url.replace(/\\/g, '/');
+    },
+    // 获取配置
+    getConfig: function() {
+        var that = this,
+            configUrl = './data/config.json';
 
-    // 初始化背景
-    initBg();
-
-    showLoading('正在加载配置文件……');
-    $.ajax({
-        url: './data/config.json',
-        type: 'get',
-        dataType: 'json'
-    })
-    .done(function(res) {
-        hideLoading();
-        config = res;
-        doclist = config.doclist || [];
-        initDoc();
-    })
-    .fail(function() {
-        //
-        console.log(arguments);
-    });
-
-    function initDoc() {
-        var $nav = $side.role('nav'),
+        that.ajax(configUrl, 'json', function(res) {
+            that.config = res;
+            that.initDocList();
+            document.title = that.config.docName;
+        });
+    },
+    // 初始化文档列表
+    initDocList: function() {
+        var that = this,
+            $nav = $('#side').role('docNav'),
             li = '';
 
-        $.each(doclist, function(index, val) {
+        that.docList = that.config.docList;
+       
+        $.each(that.docList, function(index, val) {
             val.index = index;
             li += '<li data-i="'+ index +'">'+ val.title +'</li>';
         });
@@ -118,39 +143,46 @@ $(function() {
                 text = $(this).text();
 
             $nav.role('show').text(text);
-            curDoc = doclist[i];
-            refreshDoc();
+            that.curDoc = that.docList[i];
+            that.getArticleList();
         }).eq(0).trigger('click');
-    }
+    },
+    // 获取当前文档的文章列表
+    getArticleList: function() {
+        var that = this,
+            articlesUrl = that.curDoc.articles;
 
-    function refreshDoc() {
-        var index = curDoc.index,
-            url = curDoc.articles.replace(/\\/g, '/');
-
-        showLoading('正在获取文章列表……');
-        $.ajax({
-            url: url,
-            type: 'get',
-            dataType: 'json'
-        })
-        .done(function(res) {
-            hideLoading();
-            curArticles = res;
-            refreshSide();
-        })
-        .fail(function() {
-            //
-            console.log(arguments);
+        articlesUrl = that.fixUrl(articlesUrl);
+        that.ajax(articlesUrl, 'json', function(list) {
+            that.curArticleList = list;
+            that.refreshArticleNav();
         });
+    },
+    // 刷新导航
+    refreshArticleNav: function() {
+        var that = this,
+            categories = {},
+            articleList = [],
+            $nav = $('#side').role('articleNav'),
+            str = '',
+            search = $.trim($('#searchIns').val());
 
-    }
+        if (search != '') {
+            $.each(that.curArticleList, function(index, val) {console.log(val);
+                search = search.toLowerCase();
+                if ( (val.title && val.title.toLowerCase().indexOf(search) != -1) 
+                || (val.author && val.author.toLowerCase().indexOf(search) != -1) 
+                || (val.category && val.category.toLowerCase().indexOf(search) != -1) 
+                || (val.description && val.description.toLowerCase().indexOf(search) != -1) ) {
+                    articleList.push(val);
+                }
+            });
+        } else {
+            articleList = that.curArticleList;
+        }
 
-    function refreshSide() {
-        var categories = {},
-            $list = $side.role('navlist'),
-            str = '';
-
-        $.each(curArticles, function(index, val) {
+        that.curShowArticleList = articleList;
+        $.each(articleList, function(index, val) {
             var cat = val.category || '未分类';
 
             if (!categories[cat]) categories[cat] = [];
@@ -158,93 +190,74 @@ $(function() {
         });
 
         $.each(categories, function(cat, val) {
-            str += '<li class="nav-li"> <h3> <i class="fa fa-leaf"></i> <span>'+ cat +'</span> </h3><ul class="nav2">';
+            str += '<li class="nav-li" data-role="navi"> <h3 data-role="navCat"> <i class="fa fa-leaf"></i> <span>' + cat + '</span> </h3><ul class="nav2">';
 
             $.each(val, function(i, v) {
-                str += '<li class="nav2-li"> <a href="javascript:;" data-role="item" data-i="'+ i +'">'+ v.title +'</a> </li>';
+                str += '<li class="nav2-li"> <a href="javascript:;" data-role="item" data-i="' + i + '">' + v.title + '</a> </li>';
             });
 
             str += '</ul></li>';
         });
 
-        $list.html(str);
-    }
-});
+        $nav.html(str);
 
-function showLoading(msg) {
-    var $loading = $('#loading');
-
-    $loading.find('span').text(msg);
-    $loading.css('width', 'auto');
-    $loading.css('marginLeft', 0 - $loading.width() / 2);
-    $loading.show();
-}
-
-function hideLoading() {
-    $('#loading').hide();
-}
-    
-// 优化文档内容
-function optimizeContent(content) {
-    return content;
-}
-
-// 节流
-function debounce(fn, delay, prepose) {
-    var timer, last_exec = 0;
-
-    return function() {
-        var timer, 
-            last_exec = 0;
-        return function() {
-            var that = this,
-                args = arguments,
-                diff, curr,
-                exec = function() {
-                    last_exec = +new Date();
-                    fn.apply(that, args);
-                };
-            timer && clearTimeout(timer);
-            if (prepose) {
-                diff = delay - (+new Date() - last_exec);
-                diff <= 0 && exec();
-            } else {
-                timer = setTimeout(exec, delay);
-            }
+        if ($nav.role('navi').length) {
+            $nav.role('navi').eq(0).trigger('click');
         }
-    }
-}
 
-// 背景
-function initBg() {
-    var $bg = $('#bg'),
-        $win = $(window),
-        isLoaded = false,
-        size = {},
-        image;
-    image = new Image();
-    image.onload = function() {
-        isloaded = true;
-        size.w = image.width;
-        size.h = image.height;
-        _pos();
-    }
-    image.src = $bg.attr('src');
+        if ($nav.role('item').length) {
+            $nav.role('item').eq(0).trigger('click');
+        }
+    },
+    optimizeContent: function(content) {
+        return content;
+    },
+    // 显示文章
+    refreshArticleContent: function() {
+        var that = this,
+            $content = $('#content'),
+            $article = $('#article'),
+            index, str;
 
-    $win.resize(_pos);
+        // remove config str
+        index = that.curArticleContent.indexOf(that.config.confSplit);
+        if (index > 0) {
+            str = that.curArticleContent.substr(index + that.config.confSplit.length);
+        }
 
-     _pos();
+        // markdown to html
+        html = marked(str);
+       
+        // optimize content
+        html = that.optimizeContent(html);
 
-    function _pos() {
-        var w = $win.width(),
-            h = $win.height(),
-            scale;
-        scale = Math.max(w / size.w, h / size.h);
-        $bg.css({
-            width: size.w * scale,
-            height: size.h * scale,
-            top: 0 - (size.h * scale - h) / 2,
-            left: 0 - (size.w * scale - w) / 2
+        // show content
+        $article.html(html);
+
+        // resize nicescroll
+        $content.getNiceScroll().resize();
+        
+        // img face box 
+        $content.find('img').wrap('<a class="fancybox"></a>');
+        $content.find('.fancybox').each(function(index, el) {
+            $(el).attr('rel', 'fancybox')
+            .attr('href', $(this).find('img').attr('src'));
+        });
+        $content.find('.fancybox').fancybox({
+            prevEffect  : 'fade',
+            nextEffect  : 'fade',
+            aspectRatio: true,
+            helpers: {
+                title: {
+                    type: 'outside'
+                },
+                thumbs: {
+                    width: 50,
+                    height: 50
+                }
+            }
         });
     }
 }
+
+DocAPI.init();

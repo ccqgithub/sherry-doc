@@ -1,14 +1,22 @@
 [
 	{
-		"title": "文档模板",
+		"title": "关于sherry-doc",
 		"tags": [
-			"模板",
-			"例子"
+			"help",
+			"about"
 		],
-		"categories": [
-			"sample"
-		],
+		"category": "无分类",
 		"date": "2011-44-29 02:04:00",
-		"file": "posts\\doc1\\test.md"
+		"file": "posts\\help\\about.md"
+	},
+	{
+		"title": "文章模板",
+		"tags": [
+			"sample",
+			"help"
+		],
+		"category": "无分类",
+		"date": "2011-44-29 02:04:00",
+		"file": "posts\\help\\sample.md"
 	}
 ]

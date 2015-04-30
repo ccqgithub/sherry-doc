@@ -1,10 +1,14 @@
 {
     "confSplit": "=======CONFIG======",
-    "doclist": [{
-        "title": "文档一",
+    "docName": "sherry-doc",
+    "docList": [{
+        "title": "帮助文档",
+        "path": "posts/help"
+    }, {
+        "title": "文档1",
         "path": "posts/doc1"
     }, {
-        "title": "文档二",
+        "title": "文档2",
         "path": "posts/doc2"
     }]
 }
