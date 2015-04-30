@@ -62,22 +62,13 @@ date: 2011-04-28 18:44:00
 
 文章分为‘配置’和‘内容’，通过 `config.json` 中的 `confSplit` 分割。
 
-* 配置：YAML语法
+* 配置：[YAML](http://zh.wikipedia.org/wiki/YAML)语法
 
-        # Extensions
-        ## Plugins: http://hexo.io/plugins/
-        ## Themes: http://hexo.io/themes/
-        theme: jacman
-        stylus:
-          compress: true
-
-        # Deployment
-        ## Docs: http://hexo.io/docs/deployment.html
-        deploy:
-          type: git
-          repo: https://github.com/ccqgithub/ccqgithub.github.io.git
-          branch: master
-          message: 博客更新
+        title: 测试文章1
+        tags: [tag1,tag2]
+        category: cat1
+        date: 2011-04-28 18:44:00
+        # 这部分包括接下来的一行是文档的配置信息,采用YAML语法编写，如果删除，自动化扫描将扫描不到
 
 * 内容： markdown语法，采用[marked](https://github.com/chjj/marked) 解析
 
