@@ -3,6 +3,10 @@
 
 > sherry-doc 是一个十分简单的便携式静态文档库，文档采用markdown存储，无需服务器和网络，随时随地查看，支持图片插入。
 
+## 示例
+
+[sherry-doc demo](http://sherrydoc.sinaapp.com/)
+
 ### 安装
 
 * 安装 `node.js`
