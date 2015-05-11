@@ -155,5 +155,11 @@ function walk(p) {
         list.push(conf);
     }
 
+    list.sort(function(a, b) {
+        var sa = parseInt(a.sort || 0);
+        var sb = parseInt(b.sort || 0);
+        return sa < sb ? 1 : -1;
+    });
+
     return list;
 }
