@@ -92,7 +92,16 @@ var DocAPI = {
         $('#loading').hide();
     },
     ajax: function(url, dataType, callback) {
-        var that = this;
+        var that = this,
+            version;
+
+        version = (that.config && that.config.version) ? that.config.version : new Date() * 1;
+
+        if (url.indexOf('?') == -1) {
+            url += '?_v=' + version;
+        } else {
+            url += '&_v=' + version;
+        }
 
         that.showLoading('正在获取数据……');
         $.ajax({

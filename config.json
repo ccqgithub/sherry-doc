@@ -1,6 +1,7 @@
 {
     "confSplit": "=======CONFIG======",
     "docName": "sherry-doc",
+    "version": "1",
     "docList": [{
         "title": "帮助文档",
         "path": "posts/help"
